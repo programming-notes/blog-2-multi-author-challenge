@@ -19,18 +19,13 @@ get '/entries/new' do
   erb :'entries/new'
 end
 
-
-# route handlers dealing with a specific entry
-before '/entries/:id' do
-  pass if request.path_info.match /new/
-  @entry = find_and_ensure_entry(params[:id])
-end
-
 get '/entries/:id' do
+  @entry = find_and_ensure_entry(params[:id])
   erb :'entries/show'
 end
 
 put '/entries/:id' do
+  @entry = find_and_ensure_entry(params[:id])
   @entry.assign_attributes(params[:entry])
 
   if @entry.save
@@ -42,6 +37,7 @@ put '/entries/:id' do
 end
 
 delete '/entries/:id' do
+  @entry = find_and_ensure_entry(params[:id])
   @entry.destroy
   redirect '/entries'
 end
